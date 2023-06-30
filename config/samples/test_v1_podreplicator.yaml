@@ -1,0 +1,12 @@
+apiVersion: test.prateeksingh.tech/v1
+kind: PodReplicator
+metadata:
+  labels:
+    app.kubernetes.io/name: podreplicator
+    app.kubernetes.io/instance: podreplicator-sample
+    app.kubernetes.io/part-of: controller-test
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: controller-test
+  name: podreplicator-sample
+spec:
+  # TODO(user): Add fields here

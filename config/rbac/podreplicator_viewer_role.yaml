@@ -1,0 +1,27 @@
+# permissions for end users to view podreplicators.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: podreplicator-viewer-role
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: controller-test
+    app.kubernetes.io/part-of: controller-test
+    app.kubernetes.io/managed-by: kustomize
+  name: podreplicator-viewer-role
+rules:
+- apiGroups:
+  - test.prateeksingh.tech
+  resources:
+  - podreplicators
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - test.prateeksingh.tech
+  resources:
+  - podreplicators/status
+  verbs:
+  - get
