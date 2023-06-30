@@ -35,13 +35,19 @@ spec:
           spec:
             description: PodReplicatorSpec defines the desired state of PodReplicator
             properties:
-              foo:
-                description: Foo is an example field of PodReplicator. Edit podreplicator_types.go
-                  to remove/update
+              name:
+                description: This is the name of the custom resource
                 type: string
             type: object
           status:
             description: PodReplicatorStatus defines the observed state of PodReplicator
+            properties:
+              hostIp:
+                description: This is the host IP
+                type: string
+              podIp:
+                description: This is the pod IP
+                type: string
             type: object
         type: object
     served: true

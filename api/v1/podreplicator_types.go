@@ -28,14 +28,19 @@ type PodReplicatorSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
-	// Foo is an example field of PodReplicator. Edit podreplicator_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
+	// This is the name of the custom resource
+	Name string `json:"name,omitempty"`
 }
 
 // PodReplicatorStatus defines the observed state of PodReplicator
 type PodReplicatorStatus struct {
 	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
+
+	// This is the pod IP
+	PodIP string `json:"podIp,omitempty"`
+	// This is the host IP
+	HostIP string `json:"hostIp,omitempty"`
 }
 
 //+kubebuilder:object:root=true
