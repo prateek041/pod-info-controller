@@ -18,13 +18,15 @@ package controller
 
 import (
 	"context"
+	"fmt"
 
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 
-	testv1 "github.com/prateek041/controller-test.git/api/v1"
+	corev1 "k8s.io/api/core/v1"
+	// testv1 "github.com/prateek041/controller-test.git/api/v1"
 )
 
 // PodReplicatorReconciler reconciles a PodReplicator object
@@ -50,6 +52,20 @@ func (r *PodReplicatorReconciler) Reconcile(ctx context.Context, req ctrl.Reques
 	_ = log.FromContext(ctx)
 
 	// TODO(user): your logic here
+	pod := &corev1.Pod{}
+	err := r.Get(ctx, req.NamespacedName, pod)
+
+	if err != nil {
+		log.Log.Error(err, "unable to fetch pod")
+		return ctrl.Result{}, client.IgnoreNotFound(err)
+	}
+
+	if pod.Status.Phase == corev1.PodRunning {
+		log.Log.Info("pod fetched")
+		fmt.Printf("\n Pod Name: %s", pod.Name)
+		fmt.Printf("\n Pod Namespace: %s", pod.Namespace)
+		fmt.Printf("\n Pod Labels: %s", pod.Spec.Containers[0].Image)
+	}
 
 	return ctrl.Result{}, nil
 }
@@ -57,6 +73,7 @@ func (r *PodReplicatorReconciler) Reconcile(ctx context.Context, req ctrl.Reques
 // SetupWithManager sets up the controller with the Manager.
 func (r *PodReplicatorReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
-		For(&testv1.PodReplicator{}).
+		// for pod
+		For(&corev1.Pod{}).
 		Complete(r)
 }
