@@ -35,7 +35,7 @@ jobs:
         id: tag
         run: |
           if [ -n "${{ github.event.pull_request.head.sha }}" ]; then
-            if [ "${{ matrix.dockerfile }}" == "hello-world" ]; then
+            if [ "${{ matrix.name }}" == "hello-world" ]; then
               echo "tag=${{ github.event.pull_request.head.sha }}.helloinfo" >> $GITHUB_OUTPUT
             else
               echo "tag=${{ github.event.pull_request.head.sha }}" >> $GITHUB_OUTPUT
