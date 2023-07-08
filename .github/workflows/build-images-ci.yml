@@ -19,7 +19,7 @@ jobs:
           - name: hello-world
             dockerfile: ./test-Dockerfile
           - name: controller-operator
-            dockerfile: ./Dockerfile
+            dockerfile: ./test-Dockerfilev2
 
     steps:
       - name: Set up Docker Buildx
@@ -35,7 +35,7 @@ jobs:
         id: tag
         run: |
           if [ -n "${{ github.event.pull_request.head.sha }}" ]; then
-            if [ "${{ matrix.dockerfile }}" == "hello-world" ]; then
+            if [ "${{ matrix.name }}" == "hello-world" ]; then
               echo "tag=${{ github.event.pull_request.head.sha }}.helloinfo" >> $GITHUB_OUTPUT
             else
               echo "tag=${{ github.event.pull_request.head.sha }}" >> $GITHUB_OUTPUT

@@ -1,0 +1,14 @@
+# Use a base image with the Go runtime
+FROM golang:1.17-alpine
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the source code into the container
+COPY ./test-app2/hello.go .
+
+# Build the Go program inside the container
+RUN go build -o hello hello.go
+
+# Run the command to execute the program
+CMD ["./hello"]
