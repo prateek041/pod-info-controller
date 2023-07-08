@@ -49,11 +49,15 @@ jobs:
 
       - name: Check if building tetragonpod controller image
         run: |
-          if [ "${{ matrix.name }}" == "hello-world" ]; then
+          if [ "${{ matrix.name }}" == "hello-world-v2" ]; then
             echo "suffix=.podinfo" >> $GITHUB_OUTPUT
           else
             echo "suffix=" >> $GITHUB_OUTPUT
           fi
+
+      - name: Set image tag with suffix
+        run: |
+          sed -i "s/\${{steps.tag.outputs.suffix}}/${{ steps.tag.outputs.suffix }}/g" $GITHUB_WORKSPACE/${{ matrix.dockerfile }}
 
       - name: CI Build (Pull request)
         if: github.event_name == 'pull_request_target' || github.event_name == 'pull_request'
@@ -65,4 +69,4 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           tags: |
-            ${{ github.repository_owner }}/${{ matrix.name }}-ci:${{ steps.tag.outputs.tag }}${{steps.tag.outputs.suffix}}
+            ${{ github.repository_owner }}/${{ matrix.name }}-ci:${{ steps.tag.outputs.tag }}
