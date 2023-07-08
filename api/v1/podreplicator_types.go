@@ -23,6 +23,19 @@ import (
 // EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
+const (
+	// Pod Replicator (PR)
+
+	// plural name of the pod replicator CRD
+	PRPluralName = "podreplicators"
+
+	// Kind of the pod replicator CRD
+	PRKind = "PodReplicator"
+
+	// Name of the pod replicator CRD
+	PRName = PRPluralName + "." + "test.prateeksingh.tech"
+)
+
 // PodReplicatorSpec defines the desired state of PodReplicator
 type PodReplicatorSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
