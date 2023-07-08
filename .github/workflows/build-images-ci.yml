@@ -1,0 +1,64 @@
+name: Image CI Build
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - synchronize
+      - reopened
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push-prs:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - name: hello-world
+            dockerfile: ./test-Dockerfile
+          - name: controller-operator
+            dockerfile: ./Dockerfile
+
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@ecf95283f03858871ff00b787d79c419715afc34 # v2.7.0
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Getting image tag
+        id: tag
+        run: |
+          if [ -n "${{ github.event.pull_request.head.sha }}" ]; then
+            if [ "${{ matrix.dockerfile }}" == "hello-world" ]; then
+              echo "tag=${{ github.event.pull_request.head.sha }}.helloinfo" >> $GITHUB_OUTPUT
+            else
+              echo "tag=${{ github.event.pull_request.head.sha }}" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "tag=${{ github.sha }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Checkout Source Code
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+        with:
+          persist-credentials: false
+          ref: ${{ steps.tag.outputs.tag }}
+          fetch-depth: 0
+
+      - name: CI Build (Pull request)
+        if: github.event_name == 'pull_request_target' || github.event_name == 'pull_request'
+        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        id: docker_build_ci_pr
+        with:
+          context: .
+          file: ${{ matrix.dockerfile }}
+          push: true
+          platforms: linux/amd64,linux/arm64
+          tags: |
+            ${{ github.repository_owner }}/${{ matrix.name }}-ci:${{ steps.tag.outputs.tag }}
