@@ -52,7 +52,7 @@ jobs:
           if [ "${{ matrix.name }}" == "hello-world" ]; then
             echo "suffix=.podinfo" >> $GITHUB_OUTPUT
           else
-            echo "" >> $GITHUB_OUTPUT
+            echo "suffix=" "" >> $GITHUB_OUTPUT
           fi
 
       - name: CI Build (Pull request)
