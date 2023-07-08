@@ -18,7 +18,7 @@ jobs:
         include:
           - name: hello-world
             dockerfile: ./test-Dockerfile
-          - name: controller-operator
+          - name: hello-world-v2
             dockerfile: ./test-Dockerfilev2
 
     steps:
@@ -34,12 +34,8 @@ jobs:
       - name: Getting image tag
         id: tag
         run: |
-          if [ -n "${{ github.event.pull_request.head.sha }}" ]; then
-            if [ "${{ matrix.name }}" == "hello-world" ]; then
-              echo "tag=${{ github.event.pull_request.head.sha }}.helloinfo" >> $GITHUB_OUTPUT
-            else
-              echo "tag=${{ github.event.pull_request.head.sha }}" >> $GITHUB_OUTPUT
-            fi
+          if [ ${{ github.event.pull_request.head.sha }} != "" ]; then
+            echo "tag=${{ github.event.pull_request.head.sha }}" >> $GITHUB_OUTPUT
           else
             echo "tag=${{ github.sha }}" >> $GITHUB_OUTPUT
           fi
@@ -51,6 +47,14 @@ jobs:
           ref: ${{ steps.tag.outputs.tag }}
           fetch-depth: 0
 
+      - name: Check if building tetragonpod controller image
+        run: |
+          if [ "${{ matrix.name }}" == "hello-world" ]; then
+            echo "suffix=.podinfo" >> $GITHUB_OUTPUT
+          else
+            echo "" >> $GITHUB_OUTPUT
+          fi
+
       - name: CI Build (Pull request)
         if: github.event_name == 'pull_request_target' || github.event_name == 'pull_request'
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
@@ -61,4 +65,4 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           tags: |
-            ${{ github.repository_owner }}/${{ matrix.name }}-ci:${{ steps.tag.outputs.tag }}
+            ${{ github.repository_owner }}/${{ matrix.name }}-ci:${{ steps.tag.outputs.tag }}{{steps.tag.outputs.suffix}}
