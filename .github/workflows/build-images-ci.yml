@@ -19,7 +19,7 @@ jobs:
           - name: hello-world
             dockerfile: ./test-Dockerfile
           - name: controller-operator
-            dockerfile: ./Dockerfile
+            dockerfile: ./test-Dockerfilev2
 
     steps:
       - name: Set up Docker Buildx
