@@ -51,7 +51,7 @@ jobs:
         id: suffix
         run: |
           if [ "${{ matrix.name }}" == "hello-world" ]; then
-            echo "value=.podinfo" >> $GITHUB_OUTPUT
+            echo "value=-podinfo" >> $GITHUB_OUTPUT
           else
             echo "value=" >> $GITHUB_OUTPUT
           fi
@@ -66,4 +66,4 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           tags: |
-            ${{ github.repository_owner }}/${{ matrix.name }}-ci:${{ steps.tag.outputs.tag }}/${{steps.suffix.outputs.value}}
+            ${{ github.repository_owner }}/${{ matrix.name }}-ci:${{ steps.tag.outputs.tag }}${{steps.suffix.outputs.value}}
