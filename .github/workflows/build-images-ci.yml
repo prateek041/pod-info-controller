@@ -48,11 +48,12 @@ jobs:
           fetch-depth: 0
 
       - name: Check if building tetragonpod controller image
+        id: suffix
         run: |
           if [ "${{ matrix.name }}" == "hello-world" ]; then
-            echo "suffix=.podinfo" >> $GITHUB_OUTPUT
+            echo "value=.podinfo" >> $GITHUB_OUTPUT
           else
-            echo "suffix=" >> $GITHUB_OUTPUT
+            echo "value=" >> $GITHUB_OUTPUT
           fi
 
       - name: CI Build (Pull request)
@@ -65,4 +66,4 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           tags: |
-            ${{ github.repository_owner }}/${{ matrix.name }}-ci:${{ steps.tag.outputs.tag }}/${{steps.tag.outputs.suffix}}
+            ${{ github.repository_owner }}/${{ matrix.name }}-ci:${{ steps.tag.outputs.tag }}/${{steps.suffix.outputs.value}}
