@@ -5,4 +5,4 @@ kind: Kustomization
 images:
 - name: controller
   newName: prateek041/controller
-  newTag: v4
+  newTag: v5
