@@ -5,20 +5,20 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.11.3
   creationTimestamp: null
-  name: podinfoes.cilium.io.tetragon.cilium.io
+  name: podreplicators.test.prateeksingh.tech
 spec:
-  group: cilium.io.tetragon.cilium.io
+  group: test.prateeksingh.tech
   names:
-    kind: PodInfo
-    listKind: PodInfoList
-    plural: podinfoes
-    singular: podinfo
+    kind: PodReplicator
+    listKind: PodReplicatorList
+    plural: podreplicators
+    singular: podreplicator
   scope: Namespaced
   versions:
-  - name: v1alpha1
+  - name: v1
     schema:
       openAPIV3Schema:
-        description: PodInfo is the Schema for the podinfoes API
+        description: PodReplicator is the Schema for the podreplicators API
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -33,31 +33,24 @@ spec:
           metadata:
             type: object
           spec:
+            description: PodReplicatorSpec defines the desired state of PodReplicator
             properties:
-              hostNetwork:
-                description: Host networking requested for this pod. Use the host's
-                  network namespace. If this option is set, the ports that will be
-                  used must be specified.
-                type: boolean
+              name:
+                description: This is the name of the custom resource
+                type: string
             type: object
           status:
+            description: PodReplicatorStatus defines the observed state of PodReplicator
             properties:
-              podIP:
-                description: IP address allocated to the pod. Routable at least within
-                  the cluster. Empty if not yet allocated.
+              hostIp:
+                description: This is the host IP
                 type: string
-              podIPs:
-                description: List of Ip addresses allocated to the pod. 0th entry
-                  must be same as PodIP.
-                items:
-                  properties:
-                    ip:
-                      description: ip is an IP address (IPv4 or IPv6) assigned to
-                        the pod
-                      type: string
-                  type: object
-                type: array
+              podIp:
+                description: This is the pod IP
+                type: string
             type: object
         type: object
     served: true
     storage: true
+    subresources:
+      status: {}
