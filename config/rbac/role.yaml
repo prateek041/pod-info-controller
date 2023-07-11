@@ -6,6 +6,14 @@ metadata:
   name: manager-role
 rules:
 - apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - test.prateeksingh.tech
   resources:
   - podreplicators
@@ -31,11 +39,3 @@ rules:
   - get
   - patch
   - update
-- apiGroups:
-  - ""
-  resources: 
-  - pods
-  verbs: 
-  - get 
-  - list 
-  - watch
